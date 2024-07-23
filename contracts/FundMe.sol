@@ -9,9 +9,30 @@ pragma solidity ^0.8.20;
 
 contract Fundme{
 
-    uint public minimun_funding_value;
+     // 1e18 = 1 Ether
+    // 1000000000000000 == 0.001 Ether == 3.45 $
+    uint public minimun_funding_valueinusd; //$
 
-    function receive_funds() public {}
+
+
+     // Allow users to send $$
+    // Have a minimum send value
+    function receive_funds() public payable {
+        require(msg.value >= minimun_funding_valueinusd,"Minimum amount to send is : $5 ");
+
+
+    }
+    function getPrice() public {
+        
+    }
+    function getConversionRate()public {
+        
+    }
+
+    
+
+
+
     function withdraw_funds_adminonly() public {}
 
 
