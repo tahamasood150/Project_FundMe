@@ -1,38 +1,34 @@
 // SPDX-License-Identifier: MIT
-// Objectives:
-
-//  1. Receive funds from the users<br>
-//  2. Withdraw funds<br>
-//  3. Set a minimum funding value
 
 pragma solidity ^0.8.20;
+import "../ChainLink_Interface/AggregatorV3Interface.sol";
 
 contract Fundme{
 
+    AggregatorV3Interface private PriceETHfetch;
+
+    constructor(){
+        // The address is sepolia test net one
+        PriceETHfetch = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
+    }
+
      // 1e18 = 1 Ether
-    // 1000000000000000 == 0.001 Ether == 3.45 $
-    uint public minimun_funding_valueinusd; //$
+    uint public minimun_funding_valueinusd;
 
 
-
-     // Allow users to send $$
-    // Have a minimum send value
     function receive_funds() public payable {
+        (,int ethcurrent_price,,,) = PriceETHfetch.latestRoundData();
+        uint(ethcurrent_price) =  minimun_funding_valueinusd;
         require(msg.value >= minimun_funding_valueinusd,"Minimum amount to send is : $5 ");
 
 
-    }
-    function getPrice() public {
-        
-    }
-    function getConversionRate()public {
-        
+
     }
 
-    
 
 
-
+    function getPrice() public {}
+    function getConversionRate()public{}
     function withdraw_funds_adminonly() public {}
 
 
