@@ -6,8 +6,8 @@ import "../contracts/ChainLink_Interface/AggregatorV3Interface.sol";
 contract Fundme {
 
     AggregatorV3Interface private PriceETHfetch;
-    address public admin;
-    uint public minimun_funding_valueinusd = 5e18;
+    address immutable public admin;
+    uint public constant minimun_funding_valueinusd = 5e18;
     address[] public ourfunders;
     mapping(address => uint) public ourfunders_contributedamount;
 
@@ -25,8 +25,13 @@ contract Fundme {
     }
 
     function withdraw_funds_adminonly(address payable _to) public {
-        require(msg.sender == admin, "You are not the admin");
-        _to.transfer(address(this).balance);
+        for(uint256 i=0 ;i < ourfunders.length; i++){
+        address resetfunders_array = ourfunders[i];
+            ourfunders_contributedamount[resetfunders_array] = 0;
+        }
+    ourfunders  = new address[](0);
+                require(msg.sender == admin, "You are not the admin");
+                _to.transfer(address(this).balance);
     }
 
     function getPrice() public view returns (uint256) {
