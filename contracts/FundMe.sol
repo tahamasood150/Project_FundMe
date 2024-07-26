@@ -39,7 +39,7 @@ contract Fundme {
     ourfunders  = new address[](0);
 //                require(msg.sender == admin, "You are not the admin");
         if(msg.sender == admin){
-            Notadmin();
+            revert Notadmin();
         }
                 _to.transfer(address(this).balance);
     }
