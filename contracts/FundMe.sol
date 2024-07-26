@@ -3,6 +3,7 @@
 pragma solidity ^0.8.20;
 import "../contracts/ChainLink_Interface/AggregatorV3Interface.sol";
 
+error Notadmin();
 contract Fundme {
 
     AggregatorV3Interface private PriceETHfetch;
@@ -18,6 +19,12 @@ contract Fundme {
     }
 
 
+    fallback() external payable{
+        receive_funds();
+    }
+
+
+
     function receive_funds() public payable {
         require(getConversionRate(msg.value) >= minimun_funding_valueinusd,"Minimum amount to send is : $5 ");
         ourfunders.push(msg.sender);
@@ -30,7 +37,10 @@ contract Fundme {
             ourfunders_contributedamount[resetfunders_array] = 0;
         }
     ourfunders  = new address[](0);
-                require(msg.sender == admin, "You are not the admin");
+//                require(msg.sender == admin, "You are not the admin");
+        if(msg.sender == admin){
+            Notadmin();
+        }
                 _to.transfer(address(this).balance);
     }
 
